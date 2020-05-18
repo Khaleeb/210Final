@@ -1,4 +1,4 @@
-# README for CISC 210 Final
+# README for CISC 210 Final: Rock Paper Scissors
 ### *Caleb Davis*
 
 
@@ -11,5 +11,12 @@ and
 `ssh -L 8080:localhost:40000 <eecis user>@go.eecis.udel.edu -fN`
 and
 `makex <port> <IP or Server Name>`
+
+
+## Game Instructions
+### Use joystick left & right to choose Rock, Paper, or Scissor
+### Use joystick center to select
+### After both players have locked in, winner will be displayed on the pi screen.
+
 
 

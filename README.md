@@ -12,7 +12,6 @@ and
 and
 `makex <port> <IP or Server Name>`
 
-
 ## Game Instructions
 ### Use joystick left & right to choose Rock, Paper, or Scissor
 ### Use joystick center to select

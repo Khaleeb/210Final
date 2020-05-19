@@ -112,7 +112,20 @@ int main(int argc, char** argv){
 	// Main game loop
 	if(fb){
 		signal (SIGINT, interruptHandler);
+		int state = 50; // state % 3? 0: Paper, 1: Scissors, 2: Rock
+		bool selected = false;
+		drawRock(bitBuffer, fb);
 		while(run){
+			while (!selected){
+				if(state % 3 == 0){
+					drawPaper(bitBuffer, fb);
+				} else if (state % 3 == 1){
+					drawScissors(bitBuffer, fb);
+				} else if (state % 3 == 2){
+					drawRock(bitBuffer, fb);
+				}
+				sleep(.5);
+			}
 		}
 		freeFrameBuffer(fb);
 		return 0;
@@ -146,4 +159,74 @@ void pushBitBuffer(int bitBuffer[8][8], pi_framebuffer_t* fb){
 			fb->bitmap->pixel[r][c] = bitBuffer[r][c];
 		}
 	}
+}
+
+
+// Draws Rock
+void drawRock(int bitBuffer[8][8], pi_framebuffer_t* fb){
+	clearBitBuffer();
+	for(int i = 0; i < 6; i++){
+		bitBuffer[1+i][2] = red;
+		bitBuffer[1][2+(i/3)] = red;
+		bitBuffer[4][2+(i/3)] = red;
+		bitBuffer[3+(i/3)][4+(i/3)] = red;
+	}
+	bitBuffer[2][5] = red;
+	bitBuffer[3][5] = red;
+	pushBitBuffer(bitBuffer, fb);
+}
+
+
+// Draws Paper
+void drawPaper(int bitBuffer[8][8], pi_framebuffer_t* fb){
+	clearBitBuffer();
+	for(int i = 0; i < 6; i++){
+		bitBuffer[1+i][2] = green;
+		bitBuffer[1][2+(i/3)] = green;
+		bitBuffer[4][2+(i/3)] = green;
+	}
+	bitBuffer[2][5] = green;
+	bitBuffer[3][5] = green;
+	pushBitBuffer(bitBuffer, fb);
+}
+
+
+// Draws Scissor
+void drawPaper(int bitBuffer[8][8], pi_framebuffer_t* fb){
+	clearBitBuffer();
+	for(int i = 0; i < 4; i++){
+		bitBuffer[1][2+i] = blue;
+		bitBuffer[3][2+i] = blue;
+		bitBuffer[6][2+i] = blue;
+		bitBuffer[3+i][5] = blue;
+	}
+	bitBuffer[2][2] = blue;
+	pushBitBuffer(bitBuffer, fb);
+}
+
+// Draws win
+void drawWin(int bitBuffer[8][8], pi_framebuffer_t* fb){
+	clearBitBuffer();
+	for(int i = 0; i < 2; i++){
+		bitBuffer[1+i][1] = blue;
+		bitBuffer[3+i][1] = blue;
+		bitBuffer[1+i][6] = blue;
+		bitBuffer[3+i][6] = blue;
+		bitBuffer[3+i][3] = blue;
+		bitBuffer[3+i][4] = blue;
+		bitBuffer[5+i][2] = blue;
+		bitBuffer[5+i][5] = blue;
+	}
+	pushBitBuffer(bitBuffer, fb);
+}
+
+// Draws lose
+void drawLose(int bitBuffer[8][8], pi_framebuffer_t* fb){
+	clearBitBuffer();
+	for(int i = 0; i < 4; i++){
+		bitBuffer[1+i][2] = blue;
+		bitBuffer[6][2+i] = blue;
+	}
+		bitBuffer[5][2] = blue;
+	pushBitBuffer(bitBuffer, fb);
 }

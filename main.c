@@ -33,6 +33,11 @@ void interruptHandler(){
 void error(char *msg);
 void clearBitBuffer();
 void pushBitBuffer(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
+void drawRock(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
+void drawPaper(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
+void drawScissors(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
+void drawWin(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
+void drawLose(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
 
 
 // Main function
@@ -191,8 +196,8 @@ void drawPaper(int bitBuffer[8][8], pi_framebuffer_t* fb){
 }
 
 
-// Draws Scissor
-void drawPaper(int bitBuffer[8][8], pi_framebuffer_t* fb){
+// Draws Scissors
+void drawScissors(int bitBuffer[8][8], pi_framebuffer_t* fb){
 	clearBitBuffer();
 	for(int i = 0; i < 4; i++){
 		bitBuffer[1][2+i] = blue;

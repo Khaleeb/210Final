@@ -53,7 +53,8 @@ int main(int argc, char** argv){
 
 	//Checks arguments
 	if(argc != 2 && argc != 3){
-		fprintf(stderr, "Usage: %s <port> <server, if applicable>", argv[0]);
+		fprintf(stderr, "Usage: %s <port> <server, if applicable>\n", argv[0]);
+		exit(0);
 	} else if ( argc == 2 ){
 		// Server pi stuff
 		int clien;

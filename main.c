@@ -46,7 +46,7 @@ void callbackFn(unsigned int);
 
 // Main function
 int main(int argc, char** argv){
-	int sockfd, portno, n;
+	int sockfd, portno, newsockfd;
 	char buffer[BUFFSIZE];
 	struct sockaddr_in serv_addr;
 
@@ -143,31 +143,31 @@ int main(int argc, char** argv){
 			} else {
 				clearBitBuffer();
 				pushBitBuffer(bitBuffer, fb);
-				char[1] choice;
+				char choice[1];
 				if(state % 3 == 0){
-					choice = "p";
+					choice[0] = 'p';
 				} else if(state % 3 == 1){
-					choice = "s";
+					choice[0] = 's';
 				} else if(state % 3 == 2){
-					choice = "r";
+					choice[0] = 'r';
 				}
 				int n;
 				if(argc == 2){
 					// Server side
 					bzero(buffer, BUFFSIZE);
-					n = recv(sockfd, buffer, sizeof(buffer), 0);
-					(n < 0)? error("ERROR reading from socket") : printf("Socket Msg: %s\n", buffer)
+					n = recv(newsockfd, buffer, sizeof(buffer), 0);
+					(n < 0)? error("ERROR reading from socket") : printf("Socket Msg: %s\n", buffer);
 					n = send(newsockfd,choice,1,0);
-					(n < 0)? error("ERROR writing to socket") : printf("Written to socket: %s\n", choice)
+					(n < 0)? error("ERROR writing to socket") : printf("Written to socket: %s\n", choice);
 					close(newsockfd);
 					close(sockfd);
 				} else {
 					// Client side
 					bzero(buffer, BUFFSIZE);
 					n = send(sockfd, choice, 1, 0);
-					(n < 0)? error("ERROR writing to socket") : printf("Written to socket: %s\n", choice)
+					(n < 0)? error("ERROR writing to socket") : printf("Written to socket: %s\n", choice);
 					n = recv(sockfd, buffer, sizeof(buffer), 0);
-					(n < 0)? error("ERROR reading from socket") : printf("Socket Msg: %s\n", buffer)
+					(n < 0)? error("ERROR reading from socket") : printf("Socket Msg: %s\n", buffer);
 					close(sockfd);
 				}
 

@@ -56,6 +56,7 @@ int main(int argc, char** argv){
 
 	// Set up framebuffer
 	pi_framebuffer_t* fb = getFBDevice();
+	pi_joystick_t* joystick = getJoystickDevice();
 	clearBitmap(fb->bitmap,blank);
 
 	//Checks arguments
@@ -117,13 +118,14 @@ int main(int argc, char** argv){
 	}
 
 	// Main game loop
-	if(fb){
+	if(fb && joystick){
 		signal (SIGINT, interruptHandler);
 		int state = 50; // state % 3? 0: Paper, 1: Scissors, 2: Rock
 		int selected = 0;
 		drawRock(bitBuffer, fb);
 		while(run){
-			while (!selected){
+			pollJoystick(joystick, callbackFn, 1000);
+			if (selected == 0){
 				if(state % 3 == 0){
 					drawPaper(bitBuffer, fb);
 				} else if (state % 3 == 1){
@@ -131,13 +133,16 @@ int main(int argc, char** argv){
 				} else if (state % 3 == 2){
 					drawRock(bitBuffer, fb);
 				}
-				sleep(.5);
+			} else {
+				clearBitBuffer();
+				pushBitBuffer(bitBuffer, fb);
 			}
 		}
-		freeFrameBuffer(fb);
-		return 0;
 	}
-	return 1;
+	clearBitmap(fb->bitmap,blank);
+	freeJoystick(joystick);
+	freeFrameBuffer(fb);
+	return 0;
 
 
 }
@@ -236,4 +241,15 @@ void drawLose(int bitBuffer[8][8], pi_framebuffer_t* fb){
 	}
 		bitBuffer[5][2] = blue;
 	pushBitBuffer(bitBuffer, fb);
+}
+
+// Joystick callback function
+void callbackFn(unsigned int code){
+	if(code == LEFT){
+		state--;
+	} else if (code == RIGHT){
+		state++;
+	} else if (code == ENTER){
+		selected = 1;
+	}
 }

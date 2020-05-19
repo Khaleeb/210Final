@@ -89,14 +89,14 @@ int main(int argc, char** argv){
 			printf("socket opened\n");
 		}
 
-		server = gethostbyname(argv[1]);
+		server = gethostbyname(argv[2]);
 		if(server == NULL){
 			error("ERROR no such host\n");
 		} else {
 			printf("hostname found\n");
 		}
 
-		portno = atoi(argv[2]);
+		portno = atoi(argv[1]);
 		bzero((char *) &serv_addr, sizeof(serv_addr));
 		serv_addr.sin_family = AF_INET;
 		bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);

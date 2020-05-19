@@ -6,6 +6,7 @@
  */
 
 #include<stdio.h>
+#include<stdlib.h>
 #include<signal.h>
 #include<time.h>
 #include<sense/sense.h>
@@ -52,7 +53,7 @@ int main(int argc, char** argv){
 
 	//Checks arguments
 	if(argc != 2 && argc != 3){
-		error("Usage: %s <port> <server, if applicable>", argv[0]);
+		fprintf(stderr, "Usage: %s <port> <server, if applicable>", argv[0]);
 	} else if ( argc == 2 ){
 		// Server pi stuff
 		int clien;

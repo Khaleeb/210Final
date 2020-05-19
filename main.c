@@ -19,10 +19,12 @@
 
 // Constants & Global Stuff
 #define BUFFSIZE 4096
-int blue;
-int green;
-int red;
-int blank;
+#define LEFT 105
+#define RIGHT 106
+#define ENTER 28
+
+int blue, green, red, blank;
+int state, selected;
 int bitBuffer[8][8] = {{0}};
 int run = 1;
 void interruptHandler(){
@@ -118,7 +120,7 @@ int main(int argc, char** argv){
 	if(fb){
 		signal (SIGINT, interruptHandler);
 		int state = 50; // state % 3? 0: Paper, 1: Scissors, 2: Rock
-		bool selected = false;
+		int selected = 0;
 		drawRock(bitBuffer, fb);
 		while(run){
 			while (!selected){

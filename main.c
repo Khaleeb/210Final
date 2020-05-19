@@ -121,8 +121,8 @@ int main(int argc, char** argv){
 	// Main game loop
 	if(fb && joystick){
 		signal (SIGINT, interruptHandler);
-		int state = 50; // state % 3? 0: Paper, 1: Scissors, 2: Rock
-		int selected = 0;
+		state = 50; // state % 3? 0: Paper, 1: Scissors, 2: Rock
+		selected = 0;
 		drawRock(bitBuffer, fb);
 		while(run){
 			pollJoystick(joystick, callbackFn, 1000);
@@ -174,15 +174,14 @@ void pushBitBuffer(int bitBuffer[8][8], pi_framebuffer_t* fb){
 	}
 }
 
-
 // Draws Rock
 void drawRock(int bitBuffer[8][8], pi_framebuffer_t* fb){
 	clearBitBuffer();
 	for(int i = 0; i < 6; i++){
 		bitBuffer[1+i][2] = red;
-		bitBuffer[1][2+(i/3)] = red;
-		bitBuffer[4][2+(i/3)] = red;
-		bitBuffer[3+(i/3)][4+(i/3)] = red;
+		bitBuffer[1][2+(i/2)] = red;
+		bitBuffer[4][2+(i/2)] = red;
+		bitBuffer[4+(i/2)][3+(i/2)] = red;
 	}
 	bitBuffer[2][5] = red;
 	bitBuffer[3][5] = red;
@@ -195,8 +194,8 @@ void drawPaper(int bitBuffer[8][8], pi_framebuffer_t* fb){
 	clearBitBuffer();
 	for(int i = 0; i < 6; i++){
 		bitBuffer[1+i][2] = green;
-		bitBuffer[1][2+(i/3)] = green;
-		bitBuffer[4][2+(i/3)] = green;
+		bitBuffer[1][2+(i/2)] = green;
+		bitBuffer[4][2+(i/2)] = green;
 	}
 	bitBuffer[2][5] = green;
 	bitBuffer[3][5] = green;
@@ -246,6 +245,7 @@ void drawLose(int bitBuffer[8][8], pi_framebuffer_t* fb){
 
 // Joystick callback function
 void callbackFn(unsigned int code){
+	printf("%d in", code);
 	if(code == LEFT){
 		state--;
 	} else if (code == RIGHT){

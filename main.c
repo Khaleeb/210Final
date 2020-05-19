@@ -89,7 +89,7 @@ int main(int argc, char** argv){
 		}
 
 		server = gethostbyname(argv[1]);
-		if(server == null){
+		if(server == NULL){
 			error("ERROR no such host\n");
 		} else {
 			printf("hostname found\n");

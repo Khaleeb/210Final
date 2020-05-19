@@ -177,24 +177,22 @@ int main(int argc, char** argv){
 				if(thisC == otherC){
 					// Tie
 					drawTie(bitBuffer, fb);
-					break;
 				} else if((thisC == 'r' && otherC == 's') || (thisC == 's' && otherC == 'p') || (thisC == 'p' && otherC == 'r')){
 					// this wins	
 					drawWin(bitBuffer, fb);
-					break;
 				} else {
 					// other wins
 					drawLose(bitBuffer, fb);
-					break;
 				}
+				selected = 0;
+				printf("Press the joystick to end\n");
+				while(selected == 0){
+					sleep(1);		
+				}
+				break;
 			}
 		}
 
-	}
-	selected = 0;
-	printf("Press the joystick to end\n");
-	while(selected == 0){
-	sleep(1);		
 	}
 	clearBitmap(fb->bitmap,blank);
 	freeJoystick(joystick);

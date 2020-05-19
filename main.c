@@ -40,6 +40,7 @@ void drawPaper(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
 void drawScissors(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
 void drawWin(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
 void drawLose(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
+void drawTie(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
 void callbackFn(unsigned int);
 
 
@@ -66,7 +67,7 @@ int main(int argc, char** argv){
 		exit(0);
 	} else if ( argc == 2 ){
 		// Server pi stuff
-		int clien;
+		int clilen;
 		struct sockaddr_in cli_addr;
 
 		portno = atoi(argv[1]);
@@ -88,6 +89,11 @@ int main(int argc, char** argv){
 		} else {
 			printf("Binding successful");
 		}
+
+		listen(sockfd,5);
+		clilen = sizeof(cli_addr);
+		newsockfd = accept(sockfd, (struct sockaddr*) &cli_addr, &clilen);
+		(newsockfd < 0)? error("ERROR on accept"): printf("accepted\n");
 	} else {
 		// Client pi stuff
 		struct hostent *server;
@@ -137,8 +143,53 @@ int main(int argc, char** argv){
 			} else {
 				clearBitBuffer();
 				pushBitBuffer(bitBuffer, fb);
+				char[1] choice;
+				if(state % 3 == 0){
+					choice = "p";
+				} else if(state % 3 == 1){
+					choice = "s";
+				} else if(state % 3 == 2){
+					choice = "r";
+				}
+				int n;
+				if(argc == 2){
+					// Server side
+					bzero(buffer, BUFFSIZE);
+					n = recv(sockfd, buffer, sizeof(buffer), 0);
+					(n < 0)? error("ERROR reading from socket") : printf("Socket Msg: %s\n", buffer)
+					n = send(newsockfd,choice,1,0);
+					(n < 0)? error("ERROR writing to socket") : printf("Written to socket: %s\n", choice)
+					close(newsockfd);
+					close(sockfd);
+				} else {
+					// Client side
+					bzero(buffer, BUFFSIZE);
+					n = send(sockfd, choice, 1, 0);
+					(n < 0)? error("ERROR writing to socket") : printf("Written to socket: %s\n", choice)
+					n = recv(sockfd, buffer, sizeof(buffer), 0);
+					(n < 0)? error("ERROR reading from socket") : printf("Socket Msg: %s\n", buffer)
+					close(sockfd);
+				}
+
+				// End game
+				char thisC = choice[0];
+				char otherC = buffer[0];
+				if(thisC == otherC){
+					// Tie
+					drawTie(bitBuffer, fb);
+					break;
+				} else if((thisC == 'r' && otherC == 's') || (thisC == 's' && otherC == 'p') || (thisC == 'p' && otherC == 'r')){
+					// this wins	
+					drawWin(bitBuffer, fb);
+					break;
+				} else {
+					// other wins
+					drawLose(bitBuffer, fb);
+					break;
+				}
 			}
 		}
+
 	}
 	clearBitmap(fb->bitmap,blank);
 	freeJoystick(joystick);
@@ -240,6 +291,18 @@ void drawLose(int bitBuffer[8][8], pi_framebuffer_t* fb){
 		bitBuffer[6][2+i] = blue;
 	}
 		bitBuffer[5][2] = blue;
+	pushBitBuffer(bitBuffer, fb);
+}
+
+// Draw tie
+void drawTie(int bitBuffer[8][8], pi_framebuffer_t* fb){
+	clearBitBuffer();
+	for(int i = 0; i < 6; i++){
+		bitBuffer[1][1+i] = blue;
+		bitBuffer[2][1+i] = blue;
+		bitBuffer[1+i][3] = blue;
+		bitBuffer[1+i][4] = blue;
+	}
 	pushBitBuffer(bitBuffer, fb);
 }
 

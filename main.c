@@ -40,6 +40,7 @@ void drawPaper(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
 void drawScissors(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
 void drawWin(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
 void drawLose(int bitBuffer[8][8], pi_framebuffer_t* framebuffer);
+void callbackFn(unsigned int);
 
 
 // Main function

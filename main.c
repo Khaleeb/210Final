@@ -71,13 +71,13 @@ int main(int argc, char** argv){
 		struct sockaddr_in cli_addr;
 
 		portno = atoi(argv[1]);
-		printf("Server port number set to %d", portno);
+		printf("Server port number set to %d\n", portno);
 
 		sockfd = socket(AF_INET, SOCK_STREAM, 0);
 		if(sockfd < 1){
 			error("ERROR opening socket");
 		} else {
-			printf("Socket opened");
+			printf("Socket opened\n");
 		}
 
 		bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -87,7 +87,7 @@ int main(int argc, char** argv){
 		if(bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
 			error("ERROR on binding");
 		} else {
-			printf("Binding successful");
+			printf("Binding successful\n");
 		}
 
 		listen(sockfd,5);
@@ -190,6 +190,11 @@ int main(int argc, char** argv){
 			}
 		}
 
+	}
+	selected = 0;
+	printf("Press the joystick to end\n");
+	while(selected == 0){
+	sleep(1);		
 	}
 	clearBitmap(fb->bitmap,blank);
 	freeJoystick(joystick);

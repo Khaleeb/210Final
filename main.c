@@ -184,11 +184,7 @@ int main(int argc, char** argv){
 					// other wins
 					drawLose(bitBuffer, fb);
 				}
-				selected = 0;
-				printf("Press the joystick to end\n");
-				while(selected == 0){
-					sleep(1);		
-				}
+				sleep(5);		
 				break;
 			}
 		}
@@ -311,7 +307,6 @@ void drawTie(int bitBuffer[8][8], pi_framebuffer_t* fb){
 
 // Joystick callback function
 void callbackFn(unsigned int code){
-	printf("%d in", code);
 	if(code == LEFT){
 		state--;
 	} else if (code == RIGHT){

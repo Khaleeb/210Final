@@ -113,8 +113,6 @@ int main(int argc, char** argv){
 	if(fb){
 		signal (SIGINT, interruptHandler);
 		while(run){
-			printf("Success");
-
 		}
 		freeFrameBuffer(fb);
 		return 0;
